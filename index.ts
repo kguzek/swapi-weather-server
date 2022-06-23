@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import authRoute from "./routes/auth";
+import starwarsRoute from "./routes/starwars";
 
 const hasher = require("s-salt-pepper");
 
@@ -10,6 +11,7 @@ const app = express();
 
 app.use(express.json());
 app.use("/", authRoute);
+app.use("/starwars", starwarsRoute);
 
 const PORT = process.env.NODE_PORT;
 const ITERATIONS = process.env.HASH_ITERATIONS;
