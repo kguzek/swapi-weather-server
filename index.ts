@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 dotenv.config();
 
+import authMiddleware from "./authMiddleware";
 import authRoute from "./routes/auth";
 import starwarsRoute from "./routes/starwars";
 
@@ -10,6 +11,7 @@ const hasher = require("s-salt-pepper");
 const app = express();
 
 app.use(express.json());
+app.use(authMiddleware);
 app.use("/", authRoute);
 app.use("/starwars", starwarsRoute);
 
