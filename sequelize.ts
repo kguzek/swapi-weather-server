@@ -13,6 +13,7 @@ const sequelize = new Sequelize(
 );
 
 export class User extends Model {}
+export class SWPerson extends Model {}
 
 User.init(
   {
@@ -43,5 +44,24 @@ User.init(
     // Rename properties to match database columns
     createdAt: "created_at",
     updatedAt: "modified_at",
+  }
+);
+
+SWPerson.init(
+  {
+    name: { type: DataTypes.STRING, allowNull: false },
+    birth_year: { type: DataTypes.STRING, allowNull: false },
+    eye_color: { type: DataTypes.STRING, allowNull: false },
+    gender: { type: DataTypes.STRING, allowNull: false },
+    hair_color: { type: DataTypes.STRING, allowNull: false },
+    height: { type: DataTypes.STRING, allowNull: false },
+    mass: { type: DataTypes.STRING, allowNull: false },
+    skin_color: { type: DataTypes.STRING, allowNull: false },
+  },
+  {
+    sequelize,
+    modelName: "SWPerson",
+    tableName: "sw_people",
+    timestamps: false,
   }
 );

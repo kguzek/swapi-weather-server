@@ -8,4 +8,15 @@ CREATE TABLE `server`.`users` (
   `salt` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`uuid`)
 );
-CREATE TABLE `server`.`weather` ();
+CREATE TABLE `server`.`sw_people` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NOT NULL,
+  `birth_year` VARCHAR(16) NOT NULL,
+  `eye_color` VARCHAR(16) NOT NULL,
+  `gender` VARCHAR(16) NOT NULL,
+  `hair_color` VARCHAR(16) NOT NULL,
+  `height` VARCHAR(8) NOT NULL,
+  `mass` VARCHAR(8) NOT NULL,
+  `skin_color` VARCHAR(32) NOT NULL,
+  PRIMARY KEY (`id`)
+);
