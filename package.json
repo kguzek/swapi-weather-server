@@ -1,0 +1,28 @@
+{
+  "name": "swapi-weather-server",
+  "version": "1.0.0",
+  "description": "Exercise server created for the DreamStorm recruitation process.",
+  "main": "index.ts",
+  "scripts": {
+    "dev": "NODE_PORT=3000 nodemon --exec ts-node --files index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kguzek/swapi-weather-server.git"
+  },
+  "author": "Konrad Guzek",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kguzek/swapi-weather-server/issues"
+  },
+  "homepage": "https://github.com/kguzek/swapi-weather-server#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "ts-node": "^10.8.1",
+    "typescript": "^4.7.4"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "nodemon": "^2.0.16"
+  }
+}
