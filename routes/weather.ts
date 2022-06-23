@@ -58,14 +58,15 @@ async function fetchWeather(reject: Function) {
   return await Weather.create(data);
 }
 
-router.get("/get", async (req: Request, res: Response) => {
-  function reject(message: string) {
-    console.error(message);
-    res.status(500).json({ error: message });
-  }
-
+router.get("/get", async (_req: Request, res: Response) => {
   const weatherData = await Weather.findOne({ order: [["id", "DESC"]] });
   res.status(200).json(weatherData);
+});
+
+// Register CRON job for the first minute of every hour
+cron.schedule("0 * * * *", async () => {
+  await fetchWeather(console.error);
+  console.info("Successfully fetched weather data.");
 });
 
 export default router;
