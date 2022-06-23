@@ -1,7 +1,7 @@
 import express from "express";
 import { Optional, WhereOptions } from "sequelize";
 import { SWPerson } from "../sequelize";
-const fetch = require("node-fetch");
+import fetch from "node-fetch";
 const router = express.Router();
 
 const SWAPI_URL = "https://swapi.dev/api/people/?format=json";
@@ -37,12 +37,12 @@ async function fetchPeople(res: express.Response) {
   const numPages = Math.ceil(numPeople / data?.results?.length ?? 10);
 
   // Fetch all remaining pages
-  const requests: Promise<Response>[] = [];
+  const requests = [];
   // Start on second page since page 1 has already been fetched
   for (let page = 2; page <= numPages; page++) {
     requests.push(fetch(`${SWAPI_URL}&page=${page}`));
   }
-  let responses: Response[] = [];
+  let responses = [];
   try {
     responses = await Promise.all(requests);
   } catch (err) {

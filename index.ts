@@ -5,6 +5,7 @@ dotenv.config();
 import authMiddleware from "./authMiddleware";
 import authRoute from "./routes/auth";
 import starwarsRoute from "./routes/starwars";
+import weatherRoute from "./routes/weather";
 
 const hasher = require("s-salt-pepper");
 
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use(authMiddleware);
 app.use("/", authRoute);
 app.use("/starwars", starwarsRoute);
+app.use("/weather", weatherRoute);
 
 const PORT = process.env.NODE_PORT;
 const ITERATIONS = process.env.HASH_ITERATIONS;
