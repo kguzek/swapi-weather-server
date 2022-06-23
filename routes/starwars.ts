@@ -6,6 +6,11 @@ const router = express.Router();
 
 const SWAPI_URL = "https://swapi.dev/api/people/?format=json";
 
+// Get the attributes that can be used to filter the search query
+const PERSON_ATTRIBUTES = Object.keys(SWPerson.getAttributes()).filter(
+  (prop) => prop !== "id"
+);
+
 /** Tries to retrieve the first row of the database. Returns `true` if no row was found, otherwise `false`. */
 async function isDatabaseEmpty() {
   const person = await SWPerson.findOne();
@@ -13,7 +18,12 @@ async function isDatabaseEmpty() {
 }
 
 /** Fetches each page of the Star Wars API `people` endpoint. */
-async function fetchPeople(reject: Function) {
+async function fetchPeople(res: express.Response) {
+  function reject(message: string) {
+    console.error(message);
+    res.status(500).json({ error: "Could not fetch from the remote API." });
+  }
+
   // Fetch first page to establish the number of entries
   let initialResponse;
   try {
@@ -49,10 +59,10 @@ async function fetchPeople(reject: Function) {
 }
 
 /** Retrieves the people either from the database or the API. */
-async function getPeople(reject: Function, where?: WhereOptions) {
+async function getPeople(res: express.Response, where?: WhereOptions) {
   if (await isDatabaseEmpty()) {
     // Populate the database with API data
-    const people = await fetchPeople(reject);
+    const people = await fetchPeople(res);
     if (!people) return;
     await SWPerson.bulkCreate(people as Optional<any, string>[]);
   }
@@ -62,14 +72,25 @@ async function getPeople(reject: Function, where?: WhereOptions) {
 }
 
 router.get("/getall", async (_req: express.Request, res: express.Response) => {
-  function reject(message: string) {
-    console.error(message);
-    res.status(500).json({ error: "Could not fetch from the remote API." });
-  }
-  const people = await getPeople(reject);
-  if (people) {
+  const people = await getPeople(res);
+  if (!people) return;
+  res.status(200).json(people);
+});
+
+router.get(
+  "/getfiltered",
+  async (req: express.Request, res: express.Response) => {
+    const where: { [property: string]: string } = {};
+    // Get object containing only valid attribute filters
+    for (const attribute of PERSON_ATTRIBUTES) {
+      if (!req.query[attribute]) continue;
+      where[attribute] = req.query[attribute] as string;
+    }
+
+    const people = await getPeople(res, where);
+    if (!people) return;
     res.status(200).json(people);
   }
-});
+);
 
 export default router;
