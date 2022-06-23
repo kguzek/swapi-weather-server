@@ -8,6 +8,8 @@ export default async function authorise(
   res: Response,
   next: NextFunction
 ) {
+  console.info(req.method, req.path);
+
   /** Either reject the request or allow it, depending on if the queried endpoint is public. */
   function reject(code: number, message: string) {
     const path = req.path.endsWith("/") ? req.path : req.path + "/";
