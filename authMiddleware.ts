@@ -12,6 +12,7 @@ export default async function authorise(
 
   /** Either reject the request or allow it, depending on if the queried endpoint is public. */
   function reject(code: number, message: string) {
+    // Append forward slash to path if it doesn't exist to ensure accurate comparisons
     const path = req.path.endsWith("/") ? req.path : req.path + "/";
     if (PUBLIC_ROUTES.includes(path)) {
       next();
